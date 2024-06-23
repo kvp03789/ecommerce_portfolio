@@ -1,4 +1,6 @@
+import { useOutletContext } from "react-router-dom";
 import { Box, Container, Typography, styled} from '@mui/material'
+import { useEffect } from "react";
 
 const DashboardContainer = styled('div')(
     ({ theme }) => `
@@ -8,6 +10,12 @@ const DashboardContainer = styled('div')(
 
 const AdminDashboard = () => {
 
+    const drawerOpen = useOutletContext()
+
+    useEffect(() => {
+        
+        console.log('changed open: ', drawerOpen)
+    }, [drawerOpen])
 
     return ( 
         <Box sx={{

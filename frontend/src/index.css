@@ -1,3 +1,24 @@
 a {
     text-decoration: none;
 }
+
+.main-container{
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    z-index: 2
+}
+
+.drawer{
+    z-index: 3;
+}
+
+.dashboard-main-container{
+    
+}
+
+.dashboard-top-nav{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}

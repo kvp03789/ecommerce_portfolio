@@ -5,13 +5,15 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIcon from '@mui/icons-material/ArrowBackIos';
 import MenuIcon from '@mui/icons-material/Menu';
 
-const drawerWidth = 200
+const drawerWidth = 150
 
-const NavSectionBox = ({ children }) => {
+
+
+const NavSection = ({ children }) => {
     return (
-        <Box sx={{}}>
+        <div>
             { children }
-        </Box>
+        </div>
     )
 }
 
@@ -41,14 +43,10 @@ const NavLayout = () => {
     const [open, setOpen] = useState(false)
     const { state } = useLocation()
 
-    useEffect(() => {
-        console.log('location object: ', state)
-    }, [])
+    
 
     return ( 
-        <Box sx={{
-            backgroundColor: 'grey.900'
-        }}>
+        <div className="main-container">
             <AppBar position="static">
                 <Toolbar sx={{
                     backgroundColor: 'grey.900',
@@ -61,42 +59,41 @@ const NavLayout = () => {
                     <Typography variant='h3'>{state.title ? state.title : 'Home'}</Typography>
                 </Toolbar>
             </AppBar>
-            <Drawer variant="persistent" open={open} sx={{
-                        width: drawerWidth
-                    }}>
-                <DrawerHeader>
+            <Drawer className={`drawer`}open={open} sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: drawerWidth
+        }}>
+                <NavSection>
                     <IconButton onClick={e => setOpen(!open)}>
-                        <ArrowBackIcon/>
-                    </IconButton>
-                </DrawerHeader>
-                <Divider />
-                <DrawerBody>
-                    <NavSectionBox>
-                        <Link component={NavLink} underline="none" to="/" state={{ title: 'Home'}}  sx={{'&hover:': {color: 'grey'}}}>
-                            <Typography variant="h3" >Home</Typography>
-                        </Link>
-                    </NavSectionBox>
-                    <NavSectionBox>
-                        <Link component={NavLink} underline="none" to="/products" state={{ title: 'Products'}} sx={{'&hover:': {color: 'grey'}}}>
-                            <Typography variant="h3" >Products</Typography>
-                        </Link>
-                    </NavSectionBox>
-                    <NavSectionBox>
-                        <Link component={NavLink} underline="none" to="/admin_dashboard" state={{ title: 'Admin Dashboard'}} sx={{'&hover:': {color: 'grey'}}}>
-                            <Typography variant="h3" >Dashboard</Typography>
-                        </Link>
-                    </NavSectionBox>
-                    <NavSectionBox>
-                        <Link component={NavLink} underline="none" to="/help" state={{ title: 'Help'}} sx={{'&hover:': {color: 'grey'}}}>
-                            <Typography variant="h3" >Help</Typography>
-                        </Link>
-                    </NavSectionBox>
-                </DrawerBody>
+                        <ArrowBackIcon sx={{}}/>
+                    </IconButton> 
+                </NavSection>
+                <NavSection>
+                    <Link component={NavLink} underline="none" to="/" state={{ title: 'Home'}}  sx={{'&hover:': {color: 'grey'}}}>
+                        <Typography variant="h5" >Home</Typography>
+                    </Link>
+                </NavSection>
+                <NavSection>
+                    <Link component={NavLink} underline="none" to="/products" state={{ title: 'Products'}} sx={{'&hover:': {color: 'grey'}}}>
+                        <Typography variant="h5" >Products</Typography>
+                    </Link>
+                </NavSection>
+                <NavSection>
+                    <Link component={NavLink} underline="none" to="/admin_dashboard" state={{ title: 'Admin Dashboard'}} sx={{'&hover:': {color: 'grey'}}}>
+                        <Typography variant="h5" >Dashboard</Typography>
+                    </Link>
+                </NavSection>
+                <NavSection>
+                    <Link component={NavLink} underline="none" to="/help" state={{ title: 'Help'}} sx={{'&hover:': {color: 'grey'}}}>
+                        <Typography variant="h5" >Help</Typography>
+                    </Link>
+                </NavSection>
             </Drawer>
             
             <Outlet />
             
-        </Box>
+        </div>
      );
 }
  

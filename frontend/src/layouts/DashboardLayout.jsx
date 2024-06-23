@@ -1,17 +1,18 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { Box, Link, Typography } from "@mui/material";
 
-const MainContainer = ({ children }) => {
+const DashboardMainContainer = ({ children }) => {
     return (
         <Box sx={{
-            backgroundColor: 'grey.400'
+            display: 'flex',
+            flexDirection: 'column'
         }}>
             {children}
         </Box>
     )
 }
 
-const SubContainer = ({ children }) => {
+const DashboardTopNav = ({ children }) => {
     return (
         <Box sx={{
             display: 'flex',
@@ -25,21 +26,22 @@ const SubContainer = ({ children }) => {
 
 const DashboardLayout = () => {
     return ( 
-        <MainContainer>
-            <SubContainer>
+        <DashboardMainContainer className="dashboard-main-container">
+            <DashboardTopNav className="dashboard-top-nav">
                 <div>
-                    <Link component={NavLink} to="view_orders" state={{ title: 'Admin Dashboard'}} sx={{textDecoration: 'none'}}>
+                    <Link component={NavLink} to="view_orders" state={{ title: 'Admin Dashboard'}} underline="hover" sx={{textDecoration: 'none'}}>
                         <Typography variant="h5">View Orders</Typography>
                     </Link>
                 </div>
                 <div className="nav-section">
-                    <Link component={NavLink} to="add_products" state={{ title: 'Admin Dashboard'}} sx={{textDecoration: 'none'}}>
+                    <Link component={NavLink} to="add_products" state={{ title: 'Admin Dashboard'}} underline="hover" sx={{textDecoration: 'none'}}>
                         <Typography variant="h5">Product Management</Typography>
                     </Link>
                 </div>
-            </SubContainer>
+            </DashboardTopNav>
+
             <Outlet />
-        </MainContainer>
+        </DashboardMainContainer>
      );
 }
  
