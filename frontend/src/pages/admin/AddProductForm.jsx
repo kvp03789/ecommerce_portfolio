@@ -1,7 +1,9 @@
-import { useOutletContext } from "react-router-dom";
-import { useEffect } from "react";
+
+import { useEffect, useState } from "react";
 import { Box, Button, TextField, Select, InputLabel, MenuItem, Typography } from "@mui/material";
-import { useState } from "react";
+import useProductContext from "../../hooks/useProductContext";
+import ProductItem from "../../components/ProductItem";
+
 
 const AddProductContainer = ({ children }) => {
     return(
@@ -19,12 +21,24 @@ const AddProductContainer = ({ children }) => {
     )
 }
 
-const Section = ({children}) => {
+const Section = ({ children }) => {
     return(
         <Box sx={{
             width: '80%',
             display: 'flex',
             justifyContent: 'center',
+        }}>
+            {children}
+        </Box>
+    )
+}
+
+const ProductListSection = ({ children }) => {
+    return (
+        <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center'
         }}>
             {children}
         </Box>
@@ -42,6 +56,8 @@ const AddProductForm = () => {
     const [productStock, setProductStock] = useState('')
     const [productPrice, setProductPrice] = useState('')
     const [productImageUrl, setProductImageUrl] = useState('')
+
+    const { productState } = useProductContext()
 
     useEffect(()=> {
         setError(null)
@@ -153,6 +169,11 @@ const AddProductForm = () => {
                 </Typography>
             }
             </Section>
+            <ProductListSection>
+                {productState.map(product => (
+                    <ProductItem product={product} key={product.product_id}/>
+                ))}
+            </ProductListSection>
 
         </AddProductContainer>
      );

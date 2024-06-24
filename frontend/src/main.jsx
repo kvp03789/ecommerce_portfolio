@@ -18,6 +18,7 @@ import NotFound from './pages/NotFound'
 import Orders from './pages/admin/Orders'
 import AddProductForm from './pages/admin/AddProductForm'
 import DashboardLayout from './layouts/DashboardLayout'
+import { ProductContextProvider } from './context/ProductContext'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,6 +40,8 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router}/>
+    <ProductContextProvider>
+      <RouterProvider router={router}/>
+    </ProductContextProvider>
   </React.StrictMode>,
 )
