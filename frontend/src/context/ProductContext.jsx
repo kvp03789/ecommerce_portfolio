@@ -6,7 +6,7 @@ export const productReducer = (state, action) => {
     switch(action.type){
         case 'SET_PRODUCT_LIST':
             return [...action.payload]
-        case 'ADD_PRODUCT':
+        case 'ADD_ONE_PRODUCT':
             return [...state, action.payload]
         
             default:

@@ -1,8 +1,9 @@
 
 import { useEffect, useState } from "react";
-import { Box, Button, TextField, Select, InputLabel, MenuItem, Typography } from "@mui/material";
+import { ListSubheader, Box, Button, TextField, Select, InputLabel, MenuItem, Typography, List } from "@mui/material";
 import useProductContext from "../../hooks/useProductContext";
 import ProductItem from "../../components/ProductItem";
+import useAddProduct from "../../hooks/useAddProduct";
 
 
 const AddProductContainer = ({ children }) => {
@@ -58,6 +59,7 @@ const AddProductForm = () => {
     const [productImageUrl, setProductImageUrl] = useState('')
 
     const { productState } = useProductContext()
+    const { addProduct, produtError, isLoading } = useAddProduct()
 
     useEffect(()=> {
         setError(null)
@@ -87,26 +89,7 @@ const AddProductForm = () => {
         const newProduct = {
             productName, productDescription, productCategory, productPrice, productStock, productImageUrl: 'null image url'
         }
-
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({...newProduct})
-        }
-        const response = await fetch('http://localhost:3000/admin/products', options)
-        const json = await response.json()
-        if(!response.ok){
-            setError({message: json.message})
-        }
-        else{
-            //reset form
-            document.querySelector('.new-product-form').reset()
-            console.log('form submit, heres the JSON: ', json )
-        }
-        
-        
+        addProduct(newProduct)
     }
 
     return (
@@ -158,22 +141,21 @@ const AddProductForm = () => {
             </form>
 
             <Section>
-                <Typography variant="h5">
-                    Product List
-                </Typography>
-            </Section>
-            <Section>
                 {error &&
                 <Typography variant="p">
                     {error.message}
                 </Typography>
             }
             </Section>
-            <ProductListSection>
+            <List subheader={
+                <ListSubheader component="div" id="nested-list-subheader">
+                Product List
+                </ListSubheader>
+            }>
                 {productState.map(product => (
                     <ProductItem product={product} key={product.product_id}/>
                 ))}
-            </ProductListSection>
+            </List>
 
         </AddProductContainer>
      );
