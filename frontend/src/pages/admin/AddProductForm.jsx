@@ -35,6 +35,13 @@ const AddProductForm = () => {
 
     const [productList, setProductList] = useState([])
     const [error, setError] = useState(null)
+    
+    const [productCategory, setProductCategory] = useState('Wheels and Parts')
+    const [productName, setProductName] = useState('')
+    const [productDescription, setProductDescription] = useState('')
+    const [productStock, setProductStock] = useState('')
+    const [productPrice, setProductPrice] = useState('')
+    const [productImageUrl, setProductImageUrl] = useState('')
 
     useEffect(()=> {
         setError(null)
@@ -56,19 +63,35 @@ const AddProductForm = () => {
         }
 
         getProducts()
-        
+        console.log('product list', productList)
     }, [])
 
-    const handleSubmit = async() => {
-        console.log('form submit')
-    }
+    const handleSubmit = async(e) => {
+        e.preventDefault()
+        const newProduct = {
+            productName, productDescription, productCategory, productPrice, productStock, productImageUrl: 'null image url'
+        }
 
-    const handleChange = (e) => {
-        setProductCategory(e.target.value)
-        console.log('handle change: ', e.target.value)
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({...newProduct})
+        }
+        const response = await fetch('http://localhost:3000/admin/products', options)
+        const json = await response.json()
+        if(!response.ok){
+            setError({message: json.message})
+        }
+        else{
+            //reset form
+            document.querySelector('.new-product-form').reset()
+            console.log('form submit, heres the JSON: ', json )
+        }
+        
+        
     }
-
-    const [productCategory, setProductCategory] = useState('Wheels')
 
     return (
         <AddProductContainer>
@@ -82,28 +105,31 @@ const AddProductForm = () => {
                     Add Product
                 </Typography>
             </Section>
-            <form noValidate autoComplete="off">
+            <form noValidate autoComplete="off" className="new-product-form">
                 <Box sx={{
                     backgroundColor: 'white',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center'
                 }}>
-                    <TextField label="Name" variant="outlined" required/>
-                    <TextField label="Description" variant="outlined" required rows={3}/>
+                    <TextField label="Name" variant="outlined" required onChange={e => setProductName(e.target.value)}/>
+                    <TextField label="Description" variant="outlined" required rows={3} onChange={e => setProductDescription(e.target.value)}/>
                     <InputLabel id="select-label">Category</InputLabel>
                     <Select
                         labelId="select-label"
                         id="demo-simple-select"
                         value={productCategory}
                         label="productCategory"
-                        onChange={e => handleChange(e)}
+                        onChange={e => setProductCategory(e.target.value)}
                     >
-                        <MenuItem value={'Wheels'}>Wheels</MenuItem>
-                        <MenuItem value={'Parts'}>Parts</MenuItem>
                         <MenuItem value={'Skates'}>Skates</MenuItem>
+                        <MenuItem value={'Wheels and Parts'}>Wheels and Parts</MenuItem>
+                        <MenuItem value={'Apparel'}>Apparel</MenuItem>
+                        <MenuItem value={'Protective'}>Protective</MenuItem>
+                        
                     </Select>
-                    <TextField label="Stock" variant="outlined" type="number" required/>
+                    <TextField label="Stock" variant="outlined" type="number" required onChange={e => setProductStock(e.target.value)}/>
+                    <TextField label="Price" variant="outlined" type="number" required onChange={e => setProductPrice(e.target.value)}/>
                     <Button 
                         onClick={e => handleSubmit(e)}
                         type="submit"

@@ -41,8 +41,8 @@ const DrawerBody = ({ children }) => {
 const NavLayout = () => {
 
     const [open, setOpen] = useState(false)
-    const { state } = useLocation()
-
+    const location = useLocation();
+    const state = location.state || {}
     
 
     return ( 
