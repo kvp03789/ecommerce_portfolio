@@ -9,7 +9,7 @@ router.post('/products', adminController.post_one_product)
 
 router.put('/products', adminController.edit_one_product)
 
-router.delete('/products/:id', adminController.delete_one_product)
+router.delete('/products/:productId', adminController.delete_one_product)
 
 router.get('/orders', adminController.get_all_orders)
 

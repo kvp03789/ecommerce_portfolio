@@ -6,6 +6,7 @@ import CircleIcon from '@mui/icons-material/Circle';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import useEditProduct from "../hooks/useEditProduct";
+import useDeleteProduct from "../hooks/useDeleteProduct";
 
 const FormContainer = ({ children }) => {
     <Box sx={{
@@ -26,6 +27,7 @@ const ProductItem = ({ product }) => {
     
     const [open, setOpen] = useState(false)
     const { editProductError, editProduct } = useEditProduct()
+    const { deleteProductError, deleteProduct } = useDeleteProduct()
 
     const handleClick = (e) => {
         if(e.target.tagName == "DIV" || e.target.tagName == "SPAN" || e.target.tagName == "svg"){
@@ -48,7 +50,15 @@ const ProductItem = ({ product }) => {
     }
 
     const handleDeleteProduct = (e) => {
+        e.preventDefault()
         
+        try{
+            deleteProduct(product.product_id)
+            setOpen(false)
+        }
+        catch(err){
+            setOpen(true)
+        }
     }
     
     return ( 

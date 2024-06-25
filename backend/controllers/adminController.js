@@ -85,5 +85,29 @@ exports.edit_one_product = asyncHandler(async(req, res, next) => {
 })
 
 exports.delete_one_product = asyncHandler(async(req, res, next) => {
-    res.status(200).json({message: 'deleted product!'})
+    console.log('deleting product...')
+    const { productId } = req.params
+    const selectSql = 'SELECT * FROM products WHERE product_id = ?';
+    let values = [productId]
+    
+    db.query(selectSql, values, (err, results) => {
+        if(err) throw Error(err.message)
+        else{
+            let sql = '\
+            DELETE FROM products\
+            WHERE product_id = ?;\
+            '
+            const rowToDelete = results[0]
+            db.query(sql, values, (err, result) => {
+                if(err){
+                    throw Error(err.message)
+                }
+                else{
+                    res.status(200).json({message: 'deleted product!', result: rowToDelete })
+                }
+            })
+            
+        }
+    })
+    
 })
