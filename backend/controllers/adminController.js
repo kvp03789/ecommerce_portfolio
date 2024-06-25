@@ -55,6 +55,35 @@ exports.post_one_product = asyncHandler(async(req, res, next) => {
                 }
             })
         }
-        
     })
+})
+
+exports.edit_one_product = asyncHandler(async(req, res, next) => {
+    console.log('editing product...')
+    let { productId, productName, productDescription, productStock, productPrice, productImageUrl, productCategory } = req.body
+    let values = [
+        productName,
+        productDescription,
+        parseInt(productStock),
+        parseFloat(productPrice),
+        productImageUrl,
+        productCategory,
+        productId
+    ];
+    let sql = '\
+    UPDATE products\
+    SET product_name = ?, product_description = ?, product_stock = ?, product_price = ?, product_image_url = ?, product_category = ?\
+    WHERE product_id = ?;\
+    '
+    db.query(sql, values, (err, result) => {
+        if(err) throw Error(err.message)
+        else{
+            res.status(200).json({message: 'edited product!', result})
+        }
+    })
+    
+})
+
+exports.delete_one_product = asyncHandler(async(req, res, next) => {
+    res.status(200).json({message: 'deleted product!'})
 })

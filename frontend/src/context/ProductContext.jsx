@@ -8,9 +8,12 @@ export const productReducer = (state, action) => {
             return [...action.payload]
         case 'ADD_ONE_PRODUCT':
             return [...state, action.payload]
-        
-            default:
-                return state
+        case 'EDIT_PRODUCT':
+            return state.map(prod => 
+                prod.product_id === action.payload.product_id ? action.payload : prod
+            );
+        default:
+            return state
     }
 }
 
