@@ -10,7 +10,8 @@ const usersRouter = require('./routes/users');
 const adminRouter = require('./routes/admin');
 
 const app = express();
-const db = require('./config/database')
+const db = require('./config/database');
+const errorHandler = require('./errorHandler');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -36,14 +37,16 @@ app.use(function(req, res, next) {
 });
 
 // error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+app.use(function(err, req, res, next){
+  console.error(err.stack); // Log the error stack trace for debugging
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  const statusCode = err.statusCode || 500; // Default to 500 if no statusCode is set
+  const message = err.message || 'Internal Server Error';
+
+  res.status(statusCode).json({
+    success: false,
+    message: message,
+  });
 });
 
 module.exports = app;
